@@ -121,6 +121,65 @@ class Student:
         self.Exit_btn.configure(text="""EXIT""")
         self.Exit_btn.configure(command=self.Exit)
 
+        # ================= TREEVIEW ====================
+        self.scrollbarx = Scrollbar(student_window, orient=HORIZONTAL)
+        self.scrollbary = Scrollbar(student_window, orient=VERTICAL)
+        self.tree = ttk.Treeview(student_window)
+        self.tree.place(relx=0.307, rely=0.203, width=880, height=550)
+        self.tree.configure(
+            yscrollcommand=self.scrollbary.set, xscrollcommand=self.scrollbarx.set
+        )
+        self.tree.configure(selectmode="extended")  # Allowing end user to select Multiple Items
+
+        self.tree.bind("<<TreeviewSelect>>", self.on_tree_select)
+        self.scrollbary.configure(command=self.tree.yview)
+        self.scrollbarx.configure(command=self.tree.xview)
+        self.scrollbary.place(relx=0.954, rely=0.203, width=22, height=548)
+        self.scrollbarx.place(relx=0.307, rely=0.924, width=884, height=22)
+
+        self.tree.configure(
+            columns=(
+                "Student ID",
+                "Name",
+                "Sex",
+                "Age",
+                "Address",
+                "College",
+                "Year-Level",
+                "Contact No.",
+            )
+        )
+
+        self.tree.heading("Student ID", text="Student ID", anchor=W)
+        self.tree.heading("Name", text="Name", anchor=W)
+        self.tree.heading("Sex", text="Sex", anchor=W)
+        self.tree.heading("Age", text="Age", anchor=W)
+        self.tree.heading("Year-Level", text="Year-Level", anchor=W)
+        self.tree.heading("College", text="College", anchor=W)
+        self.tree.heading("Address", text="Address", anchor=W)
+        self.tree.heading("Contact No.", text="Contact No.", anchor=W)
+
+        self.tree.column("#0", stretch=NO, minwidth=0, width=0)
+        self.tree.column("#1", stretch=NO, minwidth=0, width=80)
+        self.tree.column("#2", stretch=NO, minwidth=0, width=280)
+        self.tree.column("#3", stretch=NO, minwidth=0, width=50)
+        self.tree.column("#4", stretch=NO, minwidth=0, width=50)
+        self.tree.column("#5", stretch=NO, minwidth=0, width=100)
+        self.tree.column("#6", stretch=NO, minwidth=0, width=100)
+        self.tree.column("#7", stretch=NO, minwidth=0, width=120)
+        self.tree.column("#8", stretch=NO, minwidth=0, width=97)
+
+        self.DisplayData()
+
+    #realtime View data in Treeview if called
+    def DisplayData(self):
+        cur.execute("SELECT * FROM student_data")
+        fetch = cur.fetchall()
+        for data in fetch:
+            self.tree.insert("", "end", values=(data))
+
+
+
 
     def Exit(self):
         sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=student_window)
