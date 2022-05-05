@@ -21,7 +21,7 @@ with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-O
 
 # ============================ STUDENT WINDOW ====================================
 class Student:
-     def __init__(self, top=None):
+    def __init__(self, top=None):
         top.geometry("1366x768")
         top.resizable(0, 0)
         top.title("Student Management")
