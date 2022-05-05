@@ -14,6 +14,11 @@ global page1
 student_window = Toplevel()
 
 
+#Connection to database
+with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\Database\\student.db") as db:
+    cur = db.cursor()
+
+
 
 class Student:
     print("Test Class")
