@@ -1,6 +1,8 @@
 # ==================imports===================
 import sqlite3
+from time import strftime
 from tkinter import *
+from tkinter import messagebox
 
 # ============================================
 
@@ -61,7 +63,8 @@ class Student:
         self.search_std_btn.configure(font="-family {Poppins SemiBold} -size 10")
         self.search_std_btn.configure(borderwidth="0")
         self.search_std_btn.configure(text="""Search""")
-        self.search_std_btn.configure(command=self.search_student)
+        # self.search_std_btn.configure(command=self.search_student)
+
         # Add BTN
         self.add_std_btn = Button(student_window)
         self.add_std_btn.place(relx=0.052, rely=0.426, width=306, height=28)
@@ -74,7 +77,8 @@ class Student:
         self.add_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.add_std_btn.configure(borderwidth="0")
         self.add_std_btn.configure(text="""Add Student""")
-        self.add_std_btn.configure(command=self.add_student)
+        # self.add_std_btn.configure(command=self.add_student)
+
         # Update BTN
         self.update_std_btn = Button(student_window)
         self.update_std_btn.place(relx=0.052, rely=0.5, width=306, height=28)
@@ -87,7 +91,8 @@ class Student:
         self.update_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.update_std_btn.configure(borderwidth="0")
         self.update_std_btn.configure(text="""Update Student""")
-        self.update_std_btn.configure(command=self.update_student)
+        # self.update_std_btn.configure(command=self.update_student)
+
         # Delete BTN
         self.delete_std_btn = Button(student_window)
         self.delete_std_btn.place(relx=0.052, rely=0.57, width=306, height=27)
@@ -100,7 +105,8 @@ class Student:
         self.delete_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.delete_std_btn.configure(borderwidth="0")
         self.delete_std_btn.configure(text="""Delete Student""")
-        self.delete_std_btn.configure(command=self.delete_student)
+        # self.delete_std_btn.configure(command=self.delete_student)
+
         # Exit BTN
         self.Exit_btn = Button(student_window)
         self.Exit_btn.place(relx=0.135, rely=0.883, width=76, height=21)
@@ -114,6 +120,18 @@ class Student:
         self.Exit_btn.configure(borderwidth="0")
         self.Exit_btn.configure(text="""EXIT""")
         self.Exit_btn.configure(command=self.Exit)
+
+
+    def Exit(self):
+        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=student_window)
+        if sure == True:
+            student_window.destroy()
+
+    def time(self):
+        string = strftime("%H:%M:%S %p")
+        self.clock.config(text=string)
+        self.clock.after(1000, self.time)
+
 
 
         
