@@ -116,6 +116,9 @@ class Student:
         self.Exit_btn.configure(command=self.Exit)
 
 
+        
+
+
 root.withdraw()
 page1 = Student(student_window)
 page1.time()
