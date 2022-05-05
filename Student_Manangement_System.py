@@ -49,7 +49,7 @@ class Student:
         self.search_entry.place(relx=0.040, rely=0.286, width=240, height=28)
         self.search_entry.configure(font="-family {Poppins} -size 12")
         self.search_entry.configure(relief="flat")
-
+        # Search BTN
         self.search_std_btn = Button(student_window)
         self.search_std_btn.place(relx=0.232, rely=0.288, width=75, height=22)
         self.search_std_btn.configure(relief="flat")
@@ -62,7 +62,7 @@ class Student:
         self.search_std_btn.configure(borderwidth="0")
         self.search_std_btn.configure(text="""Search""")
         self.search_std_btn.configure(command=self.search_student)
-
+        # Add BTN
         self.add_std_btn = Button(student_window)
         self.add_std_btn.place(relx=0.052, rely=0.426, width=306, height=28)
         self.add_std_btn.configure(relief="flat")
@@ -75,7 +75,7 @@ class Student:
         self.add_std_btn.configure(borderwidth="0")
         self.add_std_btn.configure(text="""Add Student""")
         self.add_std_btn.configure(command=self.add_student)
-
+        # Update BTN
         self.update_std_btn = Button(student_window)
         self.update_std_btn.place(relx=0.052, rely=0.5, width=306, height=28)
         self.update_std_btn.configure(relief="flat")
@@ -88,7 +88,7 @@ class Student:
         self.update_std_btn.configure(borderwidth="0")
         self.update_std_btn.configure(text="""Update Student""")
         self.update_std_btn.configure(command=self.update_student)
-
+        # Delete BTN
         self.delete_std_btn = Button(student_window)
         self.delete_std_btn.place(relx=0.052, rely=0.57, width=306, height=27)
         self.delete_std_btn.configure(relief="flat")
@@ -101,7 +101,7 @@ class Student:
         self.delete_std_btn.configure(borderwidth="0")
         self.delete_std_btn.configure(text="""Delete Student""")
         self.delete_std_btn.configure(command=self.delete_student)
-
+        # Exit BTN
         self.Exit_btn = Button(student_window)
         self.Exit_btn.place(relx=0.135, rely=0.883, width=76, height=21)
         self.Exit_btn.configure(relief="flat")
