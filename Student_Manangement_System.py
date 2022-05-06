@@ -64,7 +64,7 @@ class Student:
         self.search_std_btn.configure(font="-family {Poppins SemiBold} -size 10")
         self.search_std_btn.configure(borderwidth="0")
         self.search_std_btn.configure(text="""Search""")
-        # self.search_std_btn.configure(command=self.search_student)
+        self.search_std_btn.configure(command=self.search_student)
 
         # Add BTN
         self.add_std_btn = Button(student_window)
@@ -179,9 +179,31 @@ class Student:
         for data in fetch:
             self.tree.insert("", "end", values=(data))
 
+    # for searching the student using the primary key
+    def search_student(self):
+        val = []
+        for i in self.tree.get_children():
+            val.append(i)
+            for j in self.tree.item(i)["values"]:
+                val.append(j)
+
+        try:
+            to_search = int(self.search_entry.get())
+        except ValueError:
+            messagebox.showerror("Oops!!", "Invalid Student ID.", parent=student_window)
+        else:
+            for search in val:
+                if search==to_search:
+                    self.tree.selection_set(val[val.index(search)-1])
+                    self.tree.focus(val[val.index(search)-1])
+                    messagebox.showinfo("Success!!", "Student ID: {} found.".format(self.search_entry.get()), parent=student_window)
+                    break
+            else: 
+                messagebox.showerror("Oops!!", "Student ID: {} not found.".format(self.search_entry.get()), parent=student_window)
+
     sel = []
     def on_tree_select(self, Event):
-        self.sel.clear()
+        self.sel.clear() 
         for i in self.tree.selection():
             if i not in self.sel:
                 self.sel.append(i)
