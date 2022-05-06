@@ -3,6 +3,7 @@ import sqlite3
 from time import strftime
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 
 # ============================================
 
@@ -177,6 +178,13 @@ class Student:
         fetch = cur.fetchall()
         for data in fetch:
             self.tree.insert("", "end", values=(data))
+
+    sel = []
+    def on_tree_select(self, Event):
+        self.sel.clear()
+        for i in self.tree.selection():
+            if i not in self.sel:
+                self.sel.append(i)
 
 
 
