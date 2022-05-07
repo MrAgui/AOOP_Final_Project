@@ -78,7 +78,7 @@ class Student:
         self.add_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.add_std_btn.configure(borderwidth="0")
         self.add_std_btn.configure(text="""Add Student""")
-        # self.add_std_btn.configure(command=self.add_student)
+        self.add_std_btn.configure(command=self.add_student)
 
         # Update BTN
         self.update_std_btn = Button(student_window)
@@ -221,8 +221,32 @@ class Student:
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
 
+    def add_student(self):
+        global add_window
+        global page_add_window
+        add_window = Toplevel()
+        page_add_window = Add_student(add_window)
+        page_add_window.time()
+        add_window.mainloop()
 
+# ============   ADD Window       ==============
+class Add_student:
+    def __init__(self, top=None):
+        
+        top.geometry("1366x768")
+        top.resizable(0, 0)
+        top.title("Add Student")
 
+        self.label1 = Label(add_window)
+        self.label1.place(relx=0, rely=0, width=1366, height=768)
+        self.img = PhotoImage(file="C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\img\\AddStudent.png")
+        self.label1.configure(image=self.img)
+
+        self.clock = Label(add_window)
+        self.clock.place(relx=0.84, rely=0.065, width=102, height=36)
+        self.clock.configure(font="-family {Poppins Light} -size 12")
+        self.clock.configure(foreground="#000000")
+        self.clock.configure(background="#ffffff")
         
 
 
