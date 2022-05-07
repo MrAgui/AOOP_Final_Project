@@ -208,7 +208,13 @@ class Student:
             if i not in self.sel:
                 self.sel.append(i)
 
-
+    def add_student(self):
+        global add_window
+        global page_add_window
+        add_window = Toplevel()
+        page_add_window = Add_student(add_window)
+        page_add_window.time()
+        add_window.mainloop()
 
 
     def Exit(self):
@@ -221,13 +227,7 @@ class Student:
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
 
-    def add_student(self):
-        global add_window
-        global page_add_window
-        add_window = Toplevel()
-        page_add_window = Add_student(add_window)
-        page_add_window.time()
-        add_window.mainloop()
+
 
 # ============   ADD Window       ==============
 class Add_student:
@@ -247,6 +247,15 @@ class Add_student:
         self.clock.configure(font="-family {Poppins Light} -size 12")
         self.clock.configure(foreground="#000000")
         self.clock.configure(background="#ffffff")
+
+
+    def time(self):
+        string = strftime("%H:%M:%S %p")
+        self.clock.config(text=string)
+        self.clock.after(1000, self.time)
+
+
+
         
 
 
