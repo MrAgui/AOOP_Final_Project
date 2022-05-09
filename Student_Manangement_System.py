@@ -208,13 +208,7 @@ class Student:
             if i not in self.sel:
                 self.sel.append(i)
 
-    def add_student(self):
-        global add_window
-        global page_add_window
-        add_window = Toplevel()
-        page_add_window = Add_student(add_window)
-        page_add_window.time()
-        add_window.mainloop()
+
 
 
     def Exit(self):
@@ -226,6 +220,14 @@ class Student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
+
+    def add_student(self):
+        global add_window
+        global page_add_window
+        add_window = Toplevel()
+        page_add_window = Add_student(add_window)
+        page_add_window.time()
+        add_window.mainloop()
 
 
 
@@ -248,6 +250,136 @@ class Add_student:
         self.clock.configure(foreground="#000000")
         self.clock.configure(background="#ffffff")
 
+        self.std_name_entry = Entry(add_window)
+        self.std_name_entry.place(relx=0.132, rely=0.296, width=996, height=30)
+        self.std_name_entry.configure(font="-family {Poppins} -size 12")
+        self.std_name_entry.configure(relief="flat")
+        
+        self.std_sex_entry = Entry(add_window)
+        self.std_sex_entry.place(relx=0.132, rely=0.413, width=374, height=30)
+        self.std_sex_entry.configure(font="-family {Poppins} -size 12")
+        self.std_sex_entry.configure(relief="flat")
+
+        
+        self.std_age_entry = Entry(add_window)
+        self.std_age_entry.place(relx=0.132, rely=0.529, width=374, height=30)
+        self.std_age_entry.configure(font="-family {Poppins} -size 12")
+        self.std_age_entry.configure(relief="flat")
+        
+        
+        self.std_addr_entry = Entry(add_window)
+        self.std_addr_entry.place(relx=0.132, rely=0.646, width=374, height=30)
+        self.std_addr_entry.configure(font="-family {Poppins} -size 12")
+        self.std_addr_entry.configure(relief="flat")
+       
+        
+        self.std_college_entry = Entry(add_window)
+        self.std_college_entry.place(relx=0.527, rely=0.413, width=374, height=30)
+        self.std_college_entry.configure(font="-family {Poppins} -size 12")
+        self.std_college_entry.configure(relief="flat")
+       
+        
+        self.std_yrLvl_entry = Entry(add_window)
+        self.std_yrLvl_entry.place(relx=0.527, rely=0.529, width=374, height=30)
+        self.std_yrLvl_entry.configure(font="-family {Poppins} -size 12")
+        self.std_yrLvl_entry.configure(relief="flat")
+       
+        
+        self.std_contact_entry = Entry(add_window)
+        self.std_contact_entry.place(relx=0.527, rely=0.646, width=374, height=30)
+        self.std_contact_entry.configure(font="-family {Poppins} -size 12")
+        self.std_contact_entry.configure(relief="flat")
+       
+        
+        self.add_std_btn_addWin = Button(add_window)
+        self.add_std_btn_addWin.place(relx=0.408, rely=0.836, width=96, height=34)
+        self.add_std_btn_addWin.configure(relief="flat")
+        self.add_std_btn_addWin.configure(overrelief="flat")
+        self.add_std_btn_addWin.configure(activebackground="#5BB2FE")
+        self.add_std_btn_addWin.configure(cursor="hand2")
+        self.add_std_btn_addWin.configure(foreground="#ffffff")
+        self.add_std_btn_addWin.configure(background="#5BB2FE")
+        self.add_std_btn_addWin.configure(font="-family {Poppins SemiBold} -size 14")
+        self.add_std_btn_addWin.configure(borderwidth="0")
+        self.add_std_btn_addWin.configure(text="""ADD""")
+        self.add_std_btn_addWin.configure(command=self.add)
+
+        self.clr_std_btn_addWin = Button(add_window)
+        self.clr_std_btn_addWin.place(relx=0.526, rely=0.836, width=86, height=34)
+        self.clr_std_btn_addWin.configure(relief="flat")
+        self.clr_std_btn_addWin.configure(overrelief="flat")
+        self.clr_std_btn_addWin.configure(activebackground="#5BB2FE")
+        self.clr_std_btn_addWin.configure(cursor="hand2")
+        self.clr_std_btn_addWin.configure(foreground="#ffffff")
+        self.clr_std_btn_addWin.configure(background="#5BB2FE")
+        self.clr_std_btn_addWin.configure(font="-family {Poppins SemiBold} -size 14")
+        self.clr_std_btn_addWin.configure(borderwidth="0")
+        self.clr_std_btn_addWin.configure(text="""CLEAR""")
+        self.clr_std_btn_addWin.configure(command=self.clearr)
+
+    def add(self):
+
+        add_student_name = self.std_name_entry.get()  
+        add_sex = self.std_sex_entry.get()  
+        add_age = self.std_age_entry.get()  
+        add_address = self.std_addr_entry.get()  
+        add_college = self.std_college_entry.get()
+        add_yr_lvl = self.std_yrLvl_entry.get()  
+        add_contact = self.std_contact_entry.get() 
+        
+        if add_student_name.strip():
+            if add_sex.strip():
+                if add_age.strip():
+                    if add_address.strip():
+                        if add_college.strip():
+                            if add_yr_lvl.strip():
+                                if valid_phone(add_contact):
+                                    with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\Database\\student.db") as db:
+                                        cur = db.cursor()
+                                        insert =("""INSERT INTO student_data
+                                                (
+                                                student_name,
+                                                sex, 
+                                                age, 
+                                                address, 
+                                                college, 
+                                                year_level, 
+                                                contact_no
+                                                ) 
+                                                VALUES(?,?,?,?,?,?,?)"""
+                                            )
+                                    cur.execute(insert, [add_student_name, add_sex, add_age, add_address, add_college, add_yr_lvl, add_contact])
+                                    db.commit()
+                                    messagebox.showinfo("Success!!", "student successfully added in list.", parent=add_window)
+                                
+                                    Student.sel.clear()
+                                    add_window.destroy()
+                                    page1.tree.delete(*page1.tree.get_children())
+                                    page1.DisplayData()
+                                    add_window.destroy()
+                                else:
+                                    messagebox.showerror("Oops!", "Invalid phone number.", parent=add_window)
+                            else:
+                                messagebox.showerror("Oops!", "Please student year-level.", parent=add_window)
+                        else:
+                            messagebox.showerror("Oops!", "Please enter student college.", parent=add_window)
+                    else:
+                        messagebox.showerror("Oops!", "Please enter address.", parent=add_window)
+                else:
+                    messagebox.showerror("Oops!", "Please enter Student age.", parent=add_window)
+            else:
+                messagebox.showerror("Oops!", "Please enter Student sex.", parent=add_window)
+        else:
+            messagebox.showerror("Oops!", "Please enter Student name", parent=add_window)
+
+    def clearr(self):
+        self.std_name_entry.delete(0, END)
+        self.std_sex_entry.delete(0, END)
+        self.std_age_entry.delete(0, END)
+        self.std_addr_entry.delete(0, END)
+        self.std_college_entry.delete(0, END)
+        self.std_yrLvl_entry.delete(0, END)
+        self.std_contact_entry.delete(0, END)
 
     def time(self):
         string = strftime("%H:%M:%S %p")
