@@ -4,6 +4,7 @@ from time import strftime
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+import re
 
 # ============================================
 
@@ -21,6 +22,20 @@ student_window = Toplevel()
 with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\FinalProject\\Database\\student.db") as db:
     cur = db.cursor()
 
+
+def valid_phone(phn):
+    """    
+    used regex (regular expression for validation)
+    [09] Checks is phone starts with 0, 9
+    \d    Match a digit (0-9 and anything else that is a "digit" in the regex engine)
+    {10}  Repeat the previous "\d" 11 times (11 digits)
+    $     Match the end of the string
+    Valid sample 09123456789
+
+    """
+    if re.match(r"^[09]\d{10}$", phn):
+        return True
+    return False
 
 # ============================ STUDENT WINDOW ====================================
 class Student:
@@ -385,6 +400,9 @@ class Add_student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
+
+
+
 
 
 
