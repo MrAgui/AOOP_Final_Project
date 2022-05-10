@@ -107,7 +107,7 @@ class Student:
         self.update_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.update_std_btn.configure(borderwidth="0")
         self.update_std_btn.configure(text="""Update Student""")
-        # self.update_std_btn.configure(command=self.update_student)
+        self.update_std_btn.configure(command=self.update_student)
 
         # Delete BTN
         self.delete_std_btn = Button(student_window)
@@ -121,7 +121,7 @@ class Student:
         self.delete_std_btn.configure(font="-family {Poppins SemiBold} -size 12")
         self.delete_std_btn.configure(borderwidth="0")
         self.delete_std_btn.configure(text="""Delete Student""")
-        # self.delete_std_btn.configure(command=self.delete_student)
+        self.delete_std_btn.configure(command=self.delete_student)
 
         # Exit BTN
         self.Exit_btn = Button(student_window)
@@ -235,7 +235,7 @@ class Student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
-
+    # ================ Add function
     def add_student(self):
         global add_window
         global page_add_window
@@ -243,10 +243,69 @@ class Student:
         page_add_window = Add_student(add_window)
         page_add_window.time()
         add_window.mainloop()
+    # ================ Delete Function
+    def delete_student(self):
+        val = []
+        to_delete = []
+        if len(self.sel)!=0:
+            sure = messagebox.askyesno("Confirm", "Confirm Delete", parent=student_window)
+            if sure == True:
+                for i in self.sel:
+                    for j in self.tree.item(i)["values"]:
+                        val.append(j)
+                
+                for j in range(len(val)):
+                    if j%8==0:
+                        to_delete.append(val[j])
+                
+                for k in to_delete:
+                    delete = "DELETE FROM student_data WHERE student_id = ?"
+                    cur.execute(delete, [k])
+                    db.commit()
+
+                messagebox.showinfo("Success!!", "Student deleted from database.", parent=student_window)
+                self.sel.clear()
+                self.tree.delete(*self.tree.get_children())
+
+                self.DisplayData()
+        else:
+            messagebox.showerror("Error!!","Please select a student.", parent=student_window)
+    # ================  Update_function
+    def update_student(self):
+        if len(self.sel)==1:
+            global update_window
+            update_window = Toplevel()
+            page_up_win = Update_Student(update_window)
+            page_up_win.time()
+            update_window.protocol("WM_DELETE_WINDOW", self.ex2)
+            global valll
+            valll = []
+            for i in self.sel:
+                for j in self.tree.item(i)["values"]:
+                    valll.append(j)
+
+            page_up_win.std_name_entry.insert(0, valll[1])
+            page_up_win.std_sex_entry.insert(0, valll[2])
+            page_up_win.std_age_entry.insert(0, valll[4])
+            page_up_win.std_addr_entry.insert(0, valll[5])
+            page_up_win.std_college_entry.insert(0, valll[3])
+            page_up_win.std_yrLvl_entry.insert(0, valll[6])
+            page_up_win.std_contact_entry.insert(0, valll[7])
 
 
+        elif len(self.sel)==0:
+            messagebox.showerror("Error","Please choose a student to update.", parent=student_window)
+        else:
+            messagebox.showerror("Error","Can only update one student at a time.", parent=student_window)
 
-# ============   ADD Window       ==============
+        update_window.mainloop()
+    # ================ Exit Update_window
+    def ex2(self):
+        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=update_window)
+        if sure == True:
+            update_window.destroy()
+
+# ============       ADD Window       ==============
 class Add_student:
     def __init__(self, top=None):
         
@@ -400,8 +459,153 @@ class Add_student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
+# ============   Update  Window       ==============
+class Update_Student:
+    def __init__(self, top=None):
+        top.geometry("1366x768")
+        top.resizable(0, 0)
+        top.title("Update Student")
 
+        self.label1 = Label(update_window)
+        self.label1.place(relx=0, rely=0, width=1366, height=768)
+        self.img = PhotoImage(file="C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\img\\UpdateStudent.png")
+        self.label1.configure(image=self.img)
 
+        self.clock = Label(update_window)
+        self.clock.place(relx=0.84, rely=0.065, width=102, height=36)
+        self.clock.configure(font="-family {Poppins Light} -size 12")
+        self.clock.configure(foreground="#000000")
+        self.clock.configure(background="#ffffff")
+
+        self.std_name_entry = Entry(update_window)
+        self.std_name_entry.place(relx=0.132, rely=0.296, width=996, height=30)
+        self.std_name_entry.configure(font="-family {Poppins} -size 12")
+        self.std_name_entry.configure(relief="flat")
+
+        self.std_sex_entry = Entry(update_window)
+        self.std_sex_entry.place(relx=0.132, rely=0.413, width=374, height=30)
+        self.std_sex_entry.configure(font="-family {Poppins} -size 12")
+        self.std_sex_entry.configure(relief="flat")
+
+        self.std_age_entry = Entry(update_window)
+        self.std_age_entry.place(relx=0.132, rely=0.529, width=374, height=30)
+        self.std_age_entry.configure(font="-family {Poppins} -size 12")
+        self.std_age_entry.configure(relief="flat")
+
+        self.std_addr_entry = Entry(update_window)
+        self.std_addr_entry.place(relx=0.132, rely=0.646, width=374, height=30)
+        self.std_addr_entry.configure(font="-family {Poppins} -size 12")
+        self.std_addr_entry.configure(relief="flat")
+
+        self.std_college_entry = Entry(update_window)
+        self.std_college_entry.place(relx=0.527, rely=0.413, width=374, height=30)
+        self.std_college_entry.configure(font="-family {Poppins} -size 12")
+        self.std_college_entry.configure(relief="flat")
+
+        self.std_yrLvl_entry = Entry(update_window)
+        self.std_yrLvl_entry.place(relx=0.527, rely=0.529, width=374, height=30)
+        self.std_yrLvl_entry.configure(font="-family {Poppins} -size 12")
+        self.std_yrLvl_entry.configure(relief="flat")
+
+        self.std_contact_entry = Entry(update_window)
+        self.std_contact_entry.place(relx=0.527, rely=0.646, width=374, height=30)
+        self.std_contact_entry.configure(font="-family {Poppins} -size 12")
+        self.std_contact_entry.configure(relief="flat")
+       
+        self.up_std_btn_upWin = Button(update_window)
+        self.up_std_btn_upWin.place(relx=0.408, rely=0.836, width=96, height=34)
+        self.up_std_btn_upWin.configure(relief="flat")
+        self.up_std_btn_upWin.configure(overrelief="flat")
+        self.up_std_btn_upWin.configure(activebackground="#5BB2FE")
+        self.up_std_btn_upWin.configure(cursor="hand2")
+        self.up_std_btn_upWin.configure(foreground="#ffffff")
+        self.up_std_btn_upWin.configure(background="#5BB2FE")
+        self.up_std_btn_upWin.configure(font="-family {Poppins SemiBold} -size 14")
+        self.up_std_btn_upWin.configure(borderwidth="0")
+        self.up_std_btn_upWin.configure(text="""UPDATE""")
+        self.up_std_btn_upWin.configure(command=self.update)
+
+        self.clr_std_btn_upWin = Button(update_window)
+        self.clr_std_btn_upWin.place(relx=0.526, rely=0.836, width=86, height=34)
+        self.clr_std_btn_upWin.configure(relief="flat")
+        self.clr_std_btn_upWin.configure(overrelief="flat")
+        self.clr_std_btn_upWin.configure(activebackground="#5BB2FE")
+        self.clr_std_btn_upWin.configure(cursor="hand2")
+        self.clr_std_btn_upWin.configure(foreground="#ffffff")
+        self.clr_std_btn_upWin.configure(background="#5BB2FE")
+        self.clr_std_btn_upWin.configure(font="-family {Poppins SemiBold} -size 14")
+        self.clr_std_btn_upWin.configure(borderwidth="0")
+        self.clr_std_btn_upWin.configure(text="""CLEAR""")
+        self.clr_std_btn_upWin.configure(command=self.clearr)
+
+    def update(self):
+
+        up_student_name = self.std_name_entry.get() 
+        up_sex = self.std_sex_entry.get()  
+        up_age = self.std_age_entry.get()
+        up_address = self.std_addr_entry.get()  
+        up_college = self.std_college_entry.get()  
+        up_yr_lvl = self.std_yrLvl_entry.get()  
+        up_contact = self.std_contact_entry.get()  
+
+        # input validation
+        #.strip removes white trails both leading and ending
+        if up_student_name.strip():
+            if up_sex.strip():
+                if up_age.strip():
+                    if up_address.strip():
+                        if up_college.strip():
+                            if up_yr_lvl.strip():
+                                if valid_phone(up_contact):
+                                    student_id = valll[0]
+                                    with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\Database\\student.db") as db:
+                                        cur = db.cursor()
+                                    update = (
+                                    """UPDATE student_data SET 
+                                        student_name = ?, 
+                                        sex = ?, age = ?, 
+                                        address = ?, 
+                                        college = ?, 
+                                        year_level = ?, 
+                                        contact_no = ? 
+                                        WHERE student_id = ?"""
+                                    )
+                                    cur.execute(update, [up_student_name, up_sex, up_age, up_address, up_college, up_yr_lvl, up_contact, student_id])
+                                    db.commit()
+                                    messagebox.showinfo("Success!!", "student successfully updated in list.", parent=update_window)
+                                    valll.clear()
+                                    Student.sel.clear()
+                                    page1.tree.delete(*page1.tree.get_children())
+                                    page1.DisplayData()
+                                    update_window.destroy()
+                                else:
+                                    messagebox.showerror("Oops!", "Invalid phone number.", parent=update_window)
+                            else:
+                                messagebox.showerror("Oops!", "Please student year-level.", parent=update_window)
+                        else:
+                            messagebox.showerror("Oops!", "Please enter student college.", parent=update_window)
+                    else:
+                        messagebox.showerror("Oops!", "Please enter address.", parent=update_window)
+                else:
+                    messagebox.showerror("Oops!", "Please enter Student age.", parent=update_window)
+            else:
+                messagebox.showerror("Oops!", "Please enter Student sex.", parent=update_window)
+        else:
+            messagebox.showerror("Oops!", "Please enter Student name", parent=update_window)
+
+    def clearr(self):
+        self.std_name_entry.delete(0, END)
+        self.std_sex_entry.delete(0, END)
+        self.std_age_entry.delete(0, END)
+        self.std_addr_entry.delete(0, END)
+        self.std_college_entry.delete(0, END)
+        self.std_yrLvl_entry.delete(0, END)
+        self.std_contact_entry.delete(0, END)
+
+    def time(self):
+        string = strftime("%H:%M:%S %p")
+        self.clock.config(text=string)
+        self.clock.after(1000, self.time)
 
 
 
