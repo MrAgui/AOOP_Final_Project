@@ -1,11 +1,13 @@
 # ==================imports===================
 import sqlite3
-from time import strftime
-from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
 import re
-
+import string
+# from tkinter import *
+from tkinter import END, HORIZONTAL, NO, VERTICAL, W, Button, Entry, Label, PhotoImage, Scrollbar, Tk, Toplevel, messagebox
+from tkinter import ttk
+from time import strftime
+from datetime import date
+from tkinter import scrolledtext as tkst
 # ============================================
 
 root = Tk()
@@ -18,7 +20,7 @@ global page1
 student_window = Toplevel()
 
 #Connection to database
-with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\FinalProject\\Database\\student.db") as db:
+with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\Database\\student.db") as db:
     cur = db.cursor()
 
 
@@ -36,16 +38,23 @@ def valid_phone(phn):
         return True
     return False
 
-# ============================ STUDENT WINDOW ====================================
+# def exitt():
+#     sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=root)
+#     if sure == True:
+#         student_window.destroy()
+#         root.destroy()
+
+# ============   Student Window   ==============
 class Student:
     def __init__(self, top=None):
+       
         top.geometry("1366x768")
         top.resizable(0, 0)
         top.title("Student Management")
 
         self.window_title = Label(student_window)
         self.window_title.place(relx=0, rely=0, width=1366, height=768)
-        self.img = PhotoImage(file="C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\FinalProject\\img\\StudentManageMentUI.png")
+        self.img = PhotoImage(file="C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\Final_Project\\img\\StudentManageMentUI.png")
         self.window_title.configure(image=self.img)
 
         self.final_project = Label(student_window)
@@ -66,7 +75,7 @@ class Student:
         self.search_entry.place(relx=0.040, rely=0.286, width=240, height=28)
         self.search_entry.configure(font="-family {Poppins} -size 12")
         self.search_entry.configure(relief="flat")
-        # Search BTN
+
         self.search_std_btn = Button(student_window)
         self.search_std_btn.place(relx=0.232, rely=0.288, width=75, height=22)
         self.search_std_btn.configure(relief="flat")
@@ -80,7 +89,6 @@ class Student:
         self.search_std_btn.configure(text="""Search""")
         self.search_std_btn.configure(command=self.search_student)
 
-        # Add BTN
         self.add_std_btn = Button(student_window)
         self.add_std_btn.place(relx=0.052, rely=0.426, width=306, height=28)
         self.add_std_btn.configure(relief="flat")
@@ -94,7 +102,6 @@ class Student:
         self.add_std_btn.configure(text="""Add Student""")
         self.add_std_btn.configure(command=self.add_student)
 
-        # Update BTN
         self.update_std_btn = Button(student_window)
         self.update_std_btn.place(relx=0.052, rely=0.5, width=306, height=28)
         self.update_std_btn.configure(relief="flat")
@@ -108,7 +115,6 @@ class Student:
         self.update_std_btn.configure(text="""Update Student""")
         self.update_std_btn.configure(command=self.update_student)
 
-        # Delete BTN
         self.delete_std_btn = Button(student_window)
         self.delete_std_btn.place(relx=0.052, rely=0.57, width=306, height=27)
         self.delete_std_btn.configure(relief="flat")
@@ -122,7 +128,6 @@ class Student:
         self.delete_std_btn.configure(text="""Delete Student""")
         self.delete_std_btn.configure(command=self.delete_student)
 
-        # Exit BTN
         self.Exit_btn = Button(student_window)
         self.Exit_btn.place(relx=0.135, rely=0.883, width=76, height=21)
         self.Exit_btn.configure(relief="flat")
@@ -136,7 +141,7 @@ class Student:
         self.Exit_btn.configure(text="""EXIT""")
         self.Exit_btn.configure(command=self.Exit)
 
-        # ================= TREEVIEW ====================
+        # ================= For the treeview ====================
         self.scrollbarx = Scrollbar(student_window, orient=HORIZONTAL)
         self.scrollbary = Scrollbar(student_window, orient=VERTICAL)
         self.tree = ttk.Treeview(student_window)
@@ -144,7 +149,7 @@ class Student:
         self.tree.configure(
             yscrollcommand=self.scrollbary.set, xscrollcommand=self.scrollbarx.set
         )
-        self.tree.configure(selectmode="extended")  # Allowing end user to select Multiple Items
+        self.tree.configure(selectmode="extended") # Allowing end user to select Multiple Items
 
         self.tree.bind("<<TreeviewSelect>>", self.on_tree_select)
         self.scrollbary.configure(command=self.tree.yview)
@@ -193,7 +198,7 @@ class Student:
         for data in fetch:
             self.tree.insert("", "end", values=(data))
 
-    # for searching the student using the primary key
+
     def search_student(self):
         val = []
         for i in self.tree.get_children():
@@ -214,32 +219,15 @@ class Student:
                     break
             else: 
                 messagebox.showerror("Oops!!", "Student ID: {} not found.".format(self.search_entry.get()), parent=student_window)
+    
 
     sel = []
     def on_tree_select(self, Event):
-        self.sel.clear() 
+        self.sel.clear()
         for i in self.tree.selection():
             if i not in self.sel:
                 self.sel.append(i)
 
-    def Exit(self):
-        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=student_window)
-        if sure == True:
-            student_window.destroy()
-
-    def time(self):
-        string = strftime("%H:%M:%S %p")
-        self.clock.config(text=string)
-        self.clock.after(1000, self.time)
-    # ================ Add function
-    def add_student(self):
-        global add_window
-        global page_add_window
-        add_window = Toplevel()
-        page_add_window = Add_student(add_window)
-        page_add_window.time()
-        add_window.mainloop()
-    # ================ Delete Function
     def delete_student(self):
         val = []
         to_delete = []
@@ -266,7 +254,7 @@ class Student:
                 self.DisplayData()
         else:
             messagebox.showerror("Error!!","Please select a student.", parent=student_window)
-    # ================  Update_function
+    # =================================================== UPDATE ==========================================================
     def update_student(self):
         if len(self.sel)==1:
             global update_window
@@ -295,13 +283,32 @@ class Student:
             messagebox.showerror("Error","Can only update one student at a time.", parent=student_window)
 
         update_window.mainloop()
-    # ================ Exit Update_window
+
+    def add_student(self):
+        global add_window
+        global page_add_window
+        add_window = Toplevel()
+        page_add_window = Add_student(add_window)
+        page_add_window.time()
+        add_window.mainloop()
+
+    def time(self):
+        string = strftime("%H:%M:%S %p")
+        self.clock.config(text=string)
+        self.clock.after(1000, self.time)
+
+    def Exit(self):
+        sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=student_window)
+        if sure == True:
+            student_window.destroy()
+
     def ex2(self):
         sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=update_window)
         if sure == True:
             update_window.destroy()
+            # student_window.deiconify()
 
-# ============       ADD Window       ==============
+# ============   ADD Window       ==============
 class Add_student:
     def __init__(self, top=None):
         
@@ -320,6 +327,7 @@ class Add_student:
         self.clock.configure(foreground="#000000")
         self.clock.configure(background="#ffffff")
 
+        
         self.std_name_entry = Entry(add_window)
         self.std_name_entry.place(relx=0.132, rely=0.296, width=996, height=30)
         self.std_name_entry.configure(font="-family {Poppins} -size 12")
@@ -451,11 +459,13 @@ class Add_student:
         self.std_yrLvl_entry.delete(0, END)
         self.std_contact_entry.delete(0, END)
 
+
     def time(self):
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
-# ============   Update  Window       ==============
+
+# ============  Update Window     ==============
 class Update_Student:
     def __init__(self, top=None):
         top.geometry("1366x768")
@@ -602,8 +612,24 @@ class Update_Student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
-    
+
+
 root.withdraw()
 page1 = Student(student_window)
 page1.time()
 root.mainloop()
+
+
+
+# References 
+""" 
+with 
+https://www.geeksforgeeks.org/with-statement-in-python/
+
+re (regex)
+https://www3.ntu.edu.sg/home/ehchua/programming/howto/Regexe.html
+
+strip()
+https://www.programiz.com/python-programming/methods/string/strip
+
+"""
