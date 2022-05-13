@@ -17,7 +17,6 @@ global student_window
 global page1
 student_window = Toplevel()
 
-
 #Connection to database
 with sqlite3.connect("C:\\Users\\Gigabyte\\Desktop\\2nd SY. 2021-2022\\Advance-OOP\\FinalProject\\Database\\student.db") as db:
     cur = db.cursor()
@@ -222,9 +221,6 @@ class Student:
         for i in self.tree.selection():
             if i not in self.sel:
                 self.sel.append(i)
-
-
-
 
     def Exit(self):
         sure = messagebox.askyesno("Exit","Are you sure you want to exit?", parent=student_window)
@@ -606,13 +602,7 @@ class Update_Student:
         string = strftime("%H:%M:%S %p")
         self.clock.config(text=string)
         self.clock.after(1000, self.time)
-
-
-
-
-        
-
-
+    
 root.withdraw()
 page1 = Student(student_window)
 page1.time()
